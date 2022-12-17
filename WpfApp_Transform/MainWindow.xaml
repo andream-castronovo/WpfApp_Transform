@@ -1,12 +1,37 @@
-﻿<Window x:Class="WpfApp_Transform.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp_Transform"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+﻿ <!--Programmato da Andrea Maria Castronovo - 4°I - Data inizio: 17/12/2022-->
+<Window x:Class="WpfApp_Transform.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:WpfApp_Transform"
+    mc:Ignorable="d"
+    Title="MainWindow" Height="450" Width="800">
+    
+    
+    
     <Grid>
+        
+        <!-- Spazio di movimento immagini -->
+        <Canvas Name="cnvForesta" Margin="10,10,10,70">
+            <Canvas.Background>
+                <ImageBrush ImageSource="/Immagini/foresta.png" Stretch="UniformToFill"/>
+            </Canvas.Background>
+        </Canvas>
+        
+        
+        <!-- Griglia per controlli --> 
+        <Grid Name="grdControls" VerticalAlignment="Bottom" Margin="10,0,10,5" Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Name="btnTrasla" Grid.Column="0" Content="Trasla" Height="30" Width="60" Click="btnTrasla_Click"/>
+        </Grid>
+        
+        
         
     </Grid>
 </Window>
