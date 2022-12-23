@@ -100,5 +100,12 @@
   <ItemGroup>
     <Resource Include="Immagini\fox.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Immagini\left-rotate-icon.png" />
+    <Resource Include="Immagini\right-rotate-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Immagini\debugdot.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

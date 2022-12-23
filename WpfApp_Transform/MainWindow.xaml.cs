@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 
 
 
-
 namespace WpfApp_Transform
 {
     // Programmato da Andrea Maria Castronovo - 4°I - Data inizio: 17/12/2022
@@ -25,6 +24,8 @@ namespace WpfApp_Transform
     /// </summary>
     public partial class MainWindow : Window
     {
+        double[] windowSize = new double[2];
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -32,6 +33,8 @@ namespace WpfApp_Transform
         }
 
         Image image;
+        Image debugImage;
+
         private void AggiungiOggetti()
         {
             Uri source; // Uri è la classe che ci consente di gestire una risorsa e il suo relativo indirizzo
@@ -43,24 +46,112 @@ namespace WpfApp_Transform
             // La classe Image ha bisogno di una BitmapImage, per questo l'abbiamo creata prima
             image = new Image();
             image.Source = bitmap; // Assegnamo alla risorsa dell'Image l'immagine bitmap che abbiamo creato
-            image.Margin = new Thickness(50, 50, 0, 0); // Impostiamo la sua posizione definendo gli spazi dai margini
-                                                        // Thickness(Spazio da sinistra, spazio da sopra, spazio da destra, spazio da sotto)
-            
+    
+            ScaleTransform st = new ScaleTransform(0.3, 0.3);
+            image.RenderTransform = st;
+
             cnvForesta.Children.Add(image); // Aggiungiamo l'immagine creata come figlia della canvas
 
         }
 
         int x = 0;
         int y = 0;
-        double scalaX = 1.3;
-        double scalaY = 1.3;
-        int gradi = 0;
+        double gradi = 0.0;
+        
+        double scalaX = 0.3;
+        double scalaY = 0.3;
 
-        private void btnTrasla_Click(object sender, RoutedEventArgs e)
+        const int deltaX = 10;
+        const int deltaY = 10;
+
+        const double deltaScaleX = 0.1;
+        const double deltaScaleY = 0.1;
+
+        void Aggiorna(Image toRender)
         {
-            TranslateTransform translateTransform;
-            translateTransform = new TranslateTransform(++x, ++y);
-            image.RenderTransform = translateTransform;
+            TransformGroup transformGroup = new TransformGroup();
+
+            transformGroup.Children.Add(new ScaleTransform(scalaX, scalaY));
+            transformGroup.Children.Add(new TranslateTransform(x, y));
+            transformGroup.Children.Add(
+                new RotateTransform(
+                    gradi,
+                    x + image.ActualWidth/2,
+                    y + image.ActualHeight/2
+                    )
+                );
+
+
+
+
+            Console.WriteLine($"Scala: {scalaX}, {scalaY} Coordinate: {x}, {y} Rotazione: {gradi}° intorno a {x + (Math.Floor(image.ActualWidth) / 2)}, {y + (Math.Floor(image.ActualHeight) / 2)}");
+
+            toRender.RenderTransform = transformGroup;
+
+
         }
+
+        void Spostamento(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+
+            switch (btn.Tag)
+            {
+                case "Up":
+                    y -= deltaY;
+                    break;
+                case "Down":
+                    y += deltaY;
+                    break;
+                case "Left":
+                    x -= deltaX;
+                    break;
+                case "Right":
+                    x+=deltaX;
+                    break;
+            }
+
+            Aggiorna(image);
+
+
+        }
+
+        void Scale(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+
+            switch (btn.Tag)
+            {
+                case "Up":
+                    scalaY += deltaScaleY;
+                    scalaX += deltaScaleX;
+                    break;
+                case "Down":
+                    scalaY -= deltaScaleY;
+                    scalaX -= deltaScaleX;
+                    break;
+            }
+
+            Aggiorna(image);
+        }
+
+        void Rotate(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+
+
+            switch (btn.Tag)
+            {
+                case "Left":
+                    gradi -= 45;
+                    break;
+                case "Right":
+                    gradi += 45;
+                    break;
+            }
+            Aggiorna(image);
+        }
+
+
     }
 }

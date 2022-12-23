@@ -6,7 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:WpfApp_Transform"
     mc:Ignorable="d"
-    Title="MainWindow" Height="450" Width="800">
+    Title="MainWindow" 
+    Height="450" 
+    Width="800"
+    >
     
     
     
@@ -26,9 +29,53 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
-            <Button Name="btnTrasla" Grid.Column="0" Content="Trasla" Height="30" Width="60" Click="btnTrasla_Click"/>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <Button Click="Spostamento" Tag="Up" Margin="1" Grid.Row="0" Grid.Column="1" Content="↑"></Button>
+                <Button Click="Spostamento" Tag="Left" Margin="1" Grid.Row="1" Grid.Column="0" Content="←"></Button>
+                <Button Click="Spostamento" Tag="Down" Margin="1" Grid.Row="1" Grid.Column="1" Content="↓"></Button>
+                <Button Click="Spostamento" Tag="Right" Margin="1" Grid.Row="1" Grid.Column="2" Content="→"></Button>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Button Click="Scale" Tag="Up" Grid.Row="0" Content="Scale up"   Width="100" Margin="2"/>
+                <Button Click="Scale" Tag="Down" Grid.Row="1" Content="Scale Down" Width="100" Margin="2"/>
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Click="Rotate"  Tag="Left" Grid.Column="0" Width="50" Height="50" HorizontalAlignment="Right" Margin="0,0,5,0">
+                    <Image Source="Immagini/left-rotate-icon.png"/>
+                </Button>
+
+                <Button Click="Rotate" Tag="Right" Grid.Column="1" Width="50" Height="50" HorizontalAlignment="Left" Margin="5,0,0,0">
+                    <Image Source="Immagini/right-rotate-icon.png"/>
+                </Button>
+
+
+            </Grid>
         </Grid>
         
         
