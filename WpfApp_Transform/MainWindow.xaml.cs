@@ -24,8 +24,7 @@ namespace WpfApp_Transform
     /// </summary>
     public partial class MainWindow : Window
     {
-        double[] windowSize = new double[2];
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,8 +32,25 @@ namespace WpfApp_Transform
         }
 
         Image image;
-        Image debugImage;
+        
+        int x = 0;
+        int y = 0;
+        bool destra = false;
 
+        double gradi = 0.0;
+        
+        double scalaX = 0.3;
+        double scalaY = 0.3;
+
+        const int deltaX = 2;
+        const int deltaY = 2;
+
+        const double deltaScaleX = 0.01;
+        const double deltaScaleY = 0.01;
+
+        /// <summary>
+        /// Aggiungi gli oggetti allo schermo
+        /// </summary>
         private void AggiungiOggetti()
         {
             Uri source; // Uri è la classe che ci consente di gestire una risorsa e il suo relativo indirizzo
@@ -47,50 +63,72 @@ namespace WpfApp_Transform
             image = new Image();
             image.Source = bitmap; // Assegnamo alla risorsa dell'Image l'immagine bitmap che abbiamo creato
     
-            ScaleTransform st = new ScaleTransform(0.3, 0.3);
+            ScaleTransform st = new ScaleTransform(scalaX, scalaY);
             image.RenderTransform = st;
+
+            image.Width = 1000;
+            image.Height = 500;
+
 
             cnvForesta.Children.Add(image); // Aggiungiamo l'immagine creata come figlia della canvas
 
         }
 
-        int x = 0;
-        int y = 0;
-        double gradi = 0.0;
-        
-        double scalaX = 0.3;
-        double scalaY = 0.3;
-
-        const int deltaX = 10;
-        const int deltaY = 10;
-
-        const double deltaScaleX = 0.1;
-        const double deltaScaleY = 0.1;
-
+        /// <summary>
+        /// Aggiornamento dello schermo
+        /// </summary>
+        /// <param name="toRender">Immagine da aggiornare</param>
         void Aggiorna(Image toRender)
         {
             TransformGroup transformGroup = new TransformGroup();
 
-            transformGroup.Children.Add(new ScaleTransform(scalaX, scalaY));
-            transformGroup.Children.Add(new TranslateTransform(x, y));
+            transformGroup.Children.Add(
+                new ScaleTransform(
+                    destra ? -scalaX : scalaX, 
+                    scalaY,
+                    x,
+                    y
+                    )
+                );
+            transformGroup.Children.Add(
+                new TranslateTransform(
+                    destra ? x + image.Width * scalaX : x, 
+                    y
+                    )
+                );
             transformGroup.Children.Add(
                 new RotateTransform(
                     gradi,
-                    x + image.ActualWidth/2,
-                    y + image.ActualHeight/2
+                    x + (image.Width * scalaX) / 2,
+                    y + (image.Height * scalaY) / 2
                     )
                 );
 
 
+            //if (destra)
+            //    transformGroup.Children.Add(
+            //        new ScaleTransform(-scalaX, scalaY)
+            //        );
+            //else
+            //    transformGroup.Children.Add(
+            //        new ScaleTransform(scalaX, scalaY)
+            //        );
 
+            Console.WriteLine($"Scala: {scalaX}, {scalaY} Coordinate: {x}, {y} Rotazione: {gradi}° intorno a {x}, {y}");
 
-            Console.WriteLine($"Scala: {scalaX}, {scalaY} Coordinate: {x}, {y} Rotazione: {gradi}° intorno a {x + (Math.Floor(image.ActualWidth) / 2)}, {y + (Math.Floor(image.ActualHeight) / 2)}");
 
             toRender.RenderTransform = transformGroup;
 
-
         }
 
+
+        #region Metodi bottoni
+
+        /// <summary>
+        /// Bottoni che controllano lo spostamento dello sprite
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Spostamento(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
@@ -105,17 +143,22 @@ namespace WpfApp_Transform
                     break;
                 case "Left":
                     x -= deltaX;
+                    destra = false;
                     break;
                 case "Right":
-                    x+=deltaX;
+                    x += deltaX;
+                    destra = true;
                     break;
             }
 
             Aggiorna(image);
-
-
         }
 
+        /// <summary>
+        /// Bottoni che controllano la grandezza dello sprite
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Scale(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
@@ -135,6 +178,11 @@ namespace WpfApp_Transform
             Aggiorna(image);
         }
 
+        /// <summary>
+        /// Bottoni che controllano la rotazione dello sprite
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Rotate(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
@@ -143,15 +191,16 @@ namespace WpfApp_Transform
             switch (btn.Tag)
             {
                 case "Left":
-                    gradi -= 45;
+                    gradi -= 1;
                     break;
                 case "Right":
-                    gradi += 45;
+                    gradi += 1;
                     break;
             }
             Aggiorna(image);
         }
-
+        
+        #endregion
 
     }
 }
