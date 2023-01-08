@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:WpfApp_Transform"
     mc:Ignorable="d"
     Title="MainWindow" 
+    ResizeMode="NoResize"
     Height="450" 
     Width="800"
     >
