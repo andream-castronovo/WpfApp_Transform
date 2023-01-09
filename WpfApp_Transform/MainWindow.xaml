@@ -45,10 +45,10 @@
                 </Grid.ColumnDefinitions>
 
 
-                <Button Click="Spostamento" Tag="Up" Margin="1" Grid.Row="0" Grid.Column="1" Content="↑"></Button>
-                <Button Click="Spostamento" Tag="Left" Margin="1" Grid.Row="1" Grid.Column="0" Content="←"></Button>
-                <Button Click="Spostamento" Tag="Down" Margin="1" Grid.Row="1" Grid.Column="1" Content="↓"></Button>
-                <Button Click="Spostamento" Tag="Right" Margin="1" Grid.Row="1" Grid.Column="2" Content="→"></Button>
+                <Button Name="btnTranslateUp" Margin="1" Grid.Row="0" Grid.Column="1" Content="↑"></Button>
+                <Button Name="btnTranslateLeft" Margin="1" Grid.Row="1" Grid.Column="0" Content="←"></Button>
+                <Button Name="btnTranslateDown" Margin="1" Grid.Row="1" Grid.Column="1" Content="↓"></Button>
+                <Button Name="btnTranslateRight" Margin="1" Grid.Row="1" Grid.Column="2" Content="→"></Button>
             </Grid>
 
             <Grid Grid.Column="1">
@@ -57,8 +57,8 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <Button Click="Scale" Tag="Up" Grid.Row="0" Content="Scale up"   Width="100" Margin="2"/>
-                <Button Click="Scale" Tag="Down" Grid.Row="1" Content="Scale Down" Width="100" Margin="2"/>
+                <Button Name="btnScaleUp" Grid.Row="0" Content="Scale up"   Width="100" Margin="2"/>
+                <Button Name="btnScaleDown" Grid.Row="1" Content="Scale Down" Width="100" Margin="2"/>
             </Grid>
 
             <Grid Grid.Column="2">
@@ -67,18 +67,23 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Click="Rotate"  Tag="Left" Grid.Column="0" Width="50" Height="50" HorizontalAlignment="Right" Margin="0,0,5,0">
+                <Button Name="btnRotateLeft" Grid.Column="0" Width="50" Height="50" HorizontalAlignment="Right" Margin="0,0,5,0">
                     <Image Source="Immagini/left-rotate-icon.png"/>
                 </Button>
 
-                <Button Click="Rotate" Tag="Right" Grid.Column="1" Width="50" Height="50" HorizontalAlignment="Left" Margin="5,0,0,0">
+                <Button Name="btnRotateRight" Grid.Column="1" Width="50" Height="50" HorizontalAlignment="Left" Margin="5,0,0,0">
                     <Image Source="Immagini/right-rotate-icon.png"/>
                 </Button>
 
 
             </Grid>
+            
+            <Grid Grid.Column="3">
+                <Button Name="btnReset" Click="btnReset_Click" Content="Reset" Margin="50,10,50,10"/>
+            </Grid>
         </Grid>
-        
+
+
         
         
     </Grid>

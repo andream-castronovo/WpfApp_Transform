@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 
 
@@ -29,6 +30,7 @@ namespace WpfApp_Transform
         {
             InitializeComponent();
             AggiungiOggetti();
+            SetupTimer();
         }
 
         Image image;
@@ -47,6 +49,63 @@ namespace WpfApp_Transform
 
         const double deltaScaleX = 0.01;
         const double deltaScaleY = 0.01;
+        
+        DispatcherTimer _dt;
+
+        void SetupTimer()
+        {
+            _dt = new DispatcherTimer();
+            _dt.Interval = TimeSpan.FromMilliseconds(50);
+            _dt.Tick += new EventHandler(DispatcherTimer_Tick);
+            _dt.Start();
+        }
+
+        void DispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            
+            
+            // Translate
+            if (btnTranslateUp.IsPressed)
+                y -= deltaY;
+            
+            else if (btnTranslateDown.IsPressed)
+                y += deltaY;
+            
+            if (btnTranslateLeft.IsPressed)
+            {
+                x -= deltaX;
+                destra = false;
+            }
+            else if (btnTranslateRight.IsPressed)
+            {
+                x += deltaX;
+                destra = true;
+            }
+
+            // Scale
+            if (btnScaleUp.IsPressed)
+            {
+                scalaY += deltaScaleY;
+                scalaX += deltaScaleX;
+
+            }
+            else if (btnScaleDown.IsPressed)
+            {
+                scalaY -= deltaScaleY;
+                scalaX -= deltaScaleX;
+            }
+
+            // Rotate
+
+            if (btnRotateLeft.IsPressed)
+                gradi -= 1;
+            else if (btnRotateRight.IsPressed)
+                gradi += 1;
+
+
+
+            Aggiorna(image);
+        }
 
         /// <summary>
         /// Aggiungi gli oggetti allo schermo
@@ -114,93 +173,24 @@ namespace WpfApp_Transform
             //        new ScaleTransform(scalaX, scalaY)
             //        );
 
-            Console.WriteLine($"Scala: {scalaX}, {scalaY} Coordinate: {x}, {y} Rotazione: {gradi}° intorno a {x}, {y}");
+            //Console.WriteLine($"Scala: {scalaX}, {scalaY} Coordinate: {x}, {y} Rotazione: {gradi}° intorno a {x}, {y}");
 
 
             toRender.RenderTransform = transformGroup;
 
         }
 
-
-        #region Metodi bottoni
-
-        /// <summary>
-        /// Bottoni che controllano lo spostamento dello sprite
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void Spostamento(object sender, RoutedEventArgs e)
+        private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            Button btn = (Button)sender;
-
-            switch (btn.Tag)
-            {
-                case "Up":
-                    y -= deltaY;
-                    break;
-                case "Down":
-                    y += deltaY;
-                    break;
-                case "Left":
-                    x -= deltaX;
-                    destra = false;
-                    break;
-                case "Right":
-                    x += deltaX;
-                    destra = true;
-                    break;
-            }
+            x = 0; 
+            y = 0; 
+            gradi = 0; 
+            scalaX = 0.3; 
+            scalaY = 0.3;
+            destra= false;
 
             Aggiorna(image);
         }
-
-        /// <summary>
-        /// Bottoni che controllano la grandezza dello sprite
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void Scale(object sender, RoutedEventArgs e)
-        {
-            Button btn = (Button)sender;
-
-            switch (btn.Tag)
-            {
-                case "Up":
-                    scalaY += deltaScaleY;
-                    scalaX += deltaScaleX;
-                    break;
-                case "Down":
-                    scalaY -= deltaScaleY;
-                    scalaX -= deltaScaleX;
-                    break;
-            }
-
-            Aggiorna(image);
-        }
-
-        /// <summary>
-        /// Bottoni che controllano la rotazione dello sprite
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void Rotate(object sender, RoutedEventArgs e)
-        {
-            Button btn = (Button)sender;
-
-
-            switch (btn.Tag)
-            {
-                case "Left":
-                    gradi -= 1;
-                    break;
-                case "Right":
-                    gradi += 1;
-                    break;
-            }
-            Aggiorna(image);
-        }
-        
-        #endregion
 
     }
 }
