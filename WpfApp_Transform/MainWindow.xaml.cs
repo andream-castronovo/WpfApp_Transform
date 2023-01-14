@@ -55,7 +55,7 @@ namespace WpfApp_Transform
         void SetupTimer()
         {
             _dt = new DispatcherTimer();
-            _dt.Interval = TimeSpan.FromMilliseconds(50);
+            _dt.Interval = TimeSpan.FromMilliseconds(1);
             _dt.Tick += new EventHandler(DispatcherTimer_Tick);
             _dt.Start();
         }
@@ -71,7 +71,7 @@ namespace WpfApp_Transform
             else if (btnTranslateDown.IsPressed)
                 y += deltaY;
             
-            if (btnTranslateLeft.IsPressed)
+            else if (btnTranslateLeft.IsPressed)
             {
                 x -= deltaX;
                 destra = false;
@@ -83,7 +83,7 @@ namespace WpfApp_Transform
             }
 
             // Scale
-            if (btnScaleUp.IsPressed)
+            else if (btnScaleUp.IsPressed)
             {
                 scalaY += deltaScaleY;
                 scalaX += deltaScaleX;
@@ -97,7 +97,7 @@ namespace WpfApp_Transform
 
             // Rotate
 
-            if (btnRotateLeft.IsPressed)
+            else if(btnRotateLeft.IsPressed)
                 gradi -= 1;
             else if (btnRotateRight.IsPressed)
                 gradi += 1;
@@ -122,11 +122,12 @@ namespace WpfApp_Transform
             image = new Image();
             image.Source = bitmap; // Assegnamo alla risorsa dell'Image l'immagine bitmap che abbiamo creato
     
+            image.Width = 1000;
+            image.Height = 500;
+            
             ScaleTransform st = new ScaleTransform(scalaX, scalaY);
             image.RenderTransform = st;
 
-            image.Width = 1000;
-            image.Height = 500;
 
 
             cnvForesta.Children.Add(image); // Aggiungiamo l'immagine creata come figlia della canvas
@@ -151,7 +152,7 @@ namespace WpfApp_Transform
                 );
             transformGroup.Children.Add(
                 new TranslateTransform(
-                    destra ? x + image.Width * scalaX : x, 
+                    destra ? x + (image.Width * scalaX) : x, 
                     y
                     )
                 );
@@ -173,7 +174,7 @@ namespace WpfApp_Transform
             //        new ScaleTransform(scalaX, scalaY)
             //        );
 
-            //Console.WriteLine($"Scala: {scalaX}, {scalaY} Coordinate: {x}, {y} Rotazione: {gradi}° intorno a {x}, {y}");
+            Console.WriteLine($"Scala: {(destra ? -scalaX : scalaX)}, {scalaY} Coordinate: {(destra ? x + (image.Width * scalaX) : x)}, {y} Rotazione: {gradi}° intorno a {x + (image.Width * scalaX) / 2}, {y + (image.Height * scalaY) / 2}");
 
 
             toRender.RenderTransform = transformGroup;
