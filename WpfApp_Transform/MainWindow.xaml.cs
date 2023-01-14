@@ -102,8 +102,6 @@ namespace WpfApp_Transform
             else if (btnRotateRight.IsPressed)
                 gradi += 1;
 
-
-
             Aggiorna(image);
         }
 
@@ -121,10 +119,10 @@ namespace WpfApp_Transform
             // La classe Image ha bisogno di una BitmapImage, per questo l'abbiamo creata prima
             image = new Image();
             image.Source = bitmap; // Assegnamo alla risorsa dell'Image l'immagine bitmap che abbiamo creato
-    
+
             image.Width = 1000;
-            image.Height = 500;
-            
+            image.Height = 380;
+
             ScaleTransform st = new ScaleTransform(scalaX, scalaY);
             image.RenderTransform = st;
 
@@ -142,9 +140,11 @@ namespace WpfApp_Transform
         {
             TransformGroup transformGroup = new TransformGroup();
 
+            // CONDIZIONE ? IF_TRUE : IF_FALSE
+
             transformGroup.Children.Add(
                 new ScaleTransform(
-                    destra ? -scalaX : scalaX, 
+                    destra ? -scalaX : scalaX, // -scalaX se destra è true in modo da girare lo sprite
                     scalaY,
                     x,
                     y
@@ -152,31 +152,25 @@ namespace WpfApp_Transform
                 );
             transformGroup.Children.Add(
                 new TranslateTransform(
-                    destra ? x + (image.Width * scalaX) : x, 
+                    destra ? x + image.Width * scalaX : x, // Se destra è true, essendo girato sull'asse delle X l'origine si troverà
+                                                             // a destra e non a sinistra, per cui bisogna aggiungere la Width definita
+                                                             // alla creazione dell'immagine, moltiplicata per la scala.
                     y
                     )
                 );
             transformGroup.Children.Add(
                 new RotateTransform(
                     gradi,
-                    x + (image.Width * scalaX) / 2,
-                    y + (image.Height * scalaY) / 2
+                    destra ? x + (scalaX * image.Width)/2 : x + (scalaX * image.Width) / 2, // Per ruotare nel centro dell'immagine. Prendo la metà della Width dell'immagine moltiplicata per la scala
+                                                    // e la aggiungo alla X
+                    y + (scalaY * image.Height) / 2
                     )
                 );
 
-
-            //if (destra)
-            //    transformGroup.Children.Add(
-            //        new ScaleTransform(-scalaX, scalaY)
-            //        );
-            //else
-            //    transformGroup.Children.Add(
-            //        new ScaleTransform(scalaX, scalaY)
-            //        );
-
-            Console.WriteLine($"Scala: {(destra ? -scalaX : scalaX)}, {scalaY} Coordinate: {(destra ? x + (image.Width * scalaX) : x)}, {y} Rotazione: {gradi}° intorno a {x + (image.Width * scalaX) / 2}, {y + (image.Height * scalaY) / 2}");
-
-
+            // Per debug
+            Console.WriteLine($"Scala: {(destra ? -scalaX : scalaX)}, {scalaY} Coordinate: {(destra ? x + scalaX : x)}, {y} Rotazione: {gradi}° intorno a {x + scalaX / 2}, {y + scalaY / 2}");
+            
+            // Aggiungo le modifiche effettivamente all'immagine
             toRender.RenderTransform = transformGroup;
 
         }
