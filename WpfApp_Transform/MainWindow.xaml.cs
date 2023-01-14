@@ -18,7 +18,7 @@ using System.Windows.Threading;
 
 namespace WpfApp_Transform
 {
-    // Programmato da Andrea Maria Castronovo - 4°I - Data inizio: 17/12/2022
+    // Programmato da Andrea Maria Castronovo - 4I - Data Inizio: 17/12/2022 - Data Consegna: 14/01/2023
 
     /// <summary>
     /// Logica di interazione per MainWindow.xaml
